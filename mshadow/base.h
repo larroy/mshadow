@@ -858,8 +858,10 @@ struct minimum {
 }  // namespace red
 
 #define MSHADOW_TYPE_SWITCH(type, DType, ...)       \
+#if defined(__GNUC__)
 _Pragma("GCC diagnostic push")                         \
 _Pragma("GCC diagnostic ignored \"-Wunused-local-typedefs\"") \
+#endif
   switch (type) {                                   \
   case mshadow::kFloat32:                           \
     {                                               \
@@ -906,12 +908,16 @@ _Pragma("GCC diagnostic ignored \"-Wunused-local-typedefs\"") \
   default:                                          \
     LOG(FATAL) << "Unknown type enum " << type;     \
   }                                                 \
+#if defined(__GNUC__)
 _Pragma("GCC diagnostic pop")
+#endif
 
 
 #define MSHADOW_TYPE_SWITCH_WITH_HALF2(type, DType, ...)  \
+#if defined(__GNUC__)
 _Pragma("GCC diagnostic push")                         \
 _Pragma("GCC diagnostic ignored \"-Wunused-local-typedefs\"") \
+#endif
   switch (type) {                                         \
   case mshadow::kFloat32:                                 \
     {                                                     \
@@ -952,12 +958,16 @@ _Pragma("GCC diagnostic ignored \"-Wunused-local-typedefs\"") \
   default:                                                \
     LOG(FATAL) << "Unknown type enum " << type;           \
   }                                                       \
+#if defined(__GNUC__)
 _Pragma("GCC diagnostic pop")
+#endif
 
 
 #define MSHADOW_SGL_DBL_TYPE_SWITCH(type, DType, ...)  \
+#if defined(__GNUC__)
 _Pragma("GCC diagnostic push")                         \
 _Pragma("GCC diagnostic ignored \"-Wunused-local-typedefs\"") \
+#endif
   switch (type) {                                      \
   case mshadow::kFloat32:                              \
     {                                                  \
@@ -975,11 +985,15 @@ _Pragma("GCC diagnostic ignored \"-Wunused-local-typedefs\"") \
     LOG(FATAL) << "This operation only supports "      \
                   "32-bit and 64-bit floating point";  \
   }                                                    \
+#if defined(__GNUC__)
 _Pragma("GCC diagnostic pop")
+#endif
 
 #define MSHADOW_REAL_TYPE_SWITCH(type, DType, ...)  \
+#if defined(__GNUC__)
 _Pragma("GCC diagnostic push")                         \
 _Pragma("GCC diagnostic ignored \"-Wunused-local-typedefs\"") \
+#endif
   switch (type) {                                   \
   case mshadow::kFloat32:                           \
     {                                               \
@@ -1018,11 +1032,15 @@ _Pragma("GCC diagnostic ignored \"-Wunused-local-typedefs\"") \
   default:                                          \
     LOG(FATAL) << "Unknown type enum " << type;     \
   }                                                 \
+#if defined(__GNUC__)
 _Pragma("GCC diagnostic pop")
+#endif
 
 #define MSHADOW_REAL_TYPE_SWITCH_EX(type$, DType$, DLargeType$, ...)  \
+#if defined(__GNUC__)
 _Pragma("GCC diagnostic push")                         \
 _Pragma("GCC diagnostic ignored \"-Wunused-local-typedefs\"") \
+#endif
   switch (type$) {                                  \
   case mshadow::kFloat32:                           \
     {                                               \
@@ -1064,7 +1082,9 @@ _Pragma("GCC diagnostic ignored \"-Wunused-local-typedefs\"") \
   default:                                          \
     LOG(FATAL) << "Unknown type enum " << type$;    \
   }                                                 \
+#if defined(__GNUC__)
 _Pragma("GCC diagnostic pop")
+#endif
 
 #define MSHADOW_LAYOUT_SWITCH(layout, Layout, ...)  \
   switch (layout) {                                 \
@@ -1095,15 +1115,19 @@ _Pragma("GCC diagnostic pop")
   default:                                          \
     LOG(FATAL) << "Unknown layout enum " << layout; \
   }                                                 \
+#if defined(__GNUC__)
 _Pragma("GCC diagnostic pop")
+#endif
 
 /*!
  * \brief Only supports int64 index type for aux_data
  * in NDArray class fow now.
  */
 #define MSHADOW_IDX_TYPE_SWITCH(type, DType, ...)   \
+#if defined(__GNUC__)
 _Pragma("GCC diagnostic push")                         \
 _Pragma("GCC diagnostic ignored \"-Wunused-local-typedefs\"") \
+#endif
   switch (type) {                                   \
   case mshadow::kInt64:                             \
     {                                               \
@@ -1114,7 +1138,9 @@ _Pragma("GCC diagnostic ignored \"-Wunused-local-typedefs\"") \
   default:                                          \
     LOG(FATAL) << "Unknown type enum " << type;     \
   }                                                 \
+#if defined(__GNUC__)
 _Pragma("GCC diagnostic pop")
+#endif
 
 /*! \brief get data type size from type enum */
 inline size_t mshadow_sizeof(int type) {
