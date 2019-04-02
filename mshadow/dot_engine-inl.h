@@ -336,18 +336,21 @@ struct BLASEngine<cpu, float> {
                       p_ldb.data(), p_beta.data(), pp_C.data(), p_ldc.data(),
                       1, p_group_sizeb.data());
 #else
-    index_t m_k = 0;
-    CHECK(mult_not_overflow(m, k, &m_k));
-    index_t b_m_k = 0;
-    CHECK(mult_not_overflow(batch_count, m_k, &b_m_k));
-    index_t k_n = 0;
-    CHECK(mult_not_overflow(k, n, &k_n));
-    index_t b_k_n = 0;
-    CHECK(mult_not_overflow(batch_count, k_n, &b_k_n));
-    index_t m_n = 0;
-    CHECK(mult_not_overflow(m, n, &m_n));
-    index_t b_m_n = 0;
-    CHECK(mult_not_overflow(batch_count, m_n, &b_m_n));
+    int m_k = 0;
+    CHECK(mult_not_overflow<int>(m, k, &m_k));
+    int b_m_k = 0;
+    CHECK(mult_not_overflow<int>(batch_count, m_k, &b_m_k))
+      << "LHS Tensor shape (" << batch_count << "x" << m << "x" << k << ") is too big, will overflow gemm signed 32 bit index";
+    int k_n = 0;
+    CHECK(mult_not_overflow<int>(k, n, &k_n));
+    int b_k_n = 0;
+    CHECK(mult_not_overflow<int>(batch_count, k_n, &b_k_n))
+      << "RHS Tensor shape (" << batch_count << "x" << k << "x" << n << ") is too big, will overflow gemm signed 32 bit index";
+    int m_n = 0;
+    CHECK(mult_not_overflow<int>(m, n, &m_n));
+    int b_m_n = 0;
+    CHECK(mult_not_overflow<int>(batch_count, m_n, &b_m_n))
+      << "Result Tensor shape (" << batch_count << "x" << m << "x" << n  << ") is too big, will overflow gemm signed 32 bit index";
 
     for (index_t i = 0; i < batch_count; ++i) {
       gemm(stream, transa, transb, m, n, k, alpha,
